@@ -130,11 +130,11 @@
       <h1>Summary</h1>
       <table style="width: 100%">
         <tr>
-          <th>Run</th>
-          <th>Time on the wall</th>
+          <th>#</th>
           <th>Climbing</th>
           <th>Resting</th>
-          <th>Total Time (s)</th>
+          <th>ToW</th>
+          <th>Time Between</th>
         </tr>
 
         {#each new Set(timings.map(t => t.run)) as runNumber}
@@ -143,14 +143,14 @@
                reduce((old, next) => old + next.totalTime(), 0)}
           <tr>
             <td>{runNumber}</td>
-            <td>{wallTime.toFixed(1)}s</td>
-            <td>{(timings.
+            <td>{timings.
               filter(t => t.run === runNumber && t.type === "climbing").
-              reduce((old, next) => old + next.totalTime(), 0) / wallTime * 100).toFixed()}%</td>
-            <td>{(timings.
+              reduce((old, next) => old + next.totalTime(), 0).toFixed(1)}s</td>
+            <td>{timings.
               filter(t => t.run === runNumber && t.type === "take").
-              reduce((old, next) => old + next.totalTime(), 0) / wallTime * 100).toFixed()}%</td>
-            <td>{(timings.filter(r => r.run === runNumber).reduce((old, next) => old + next.totalTime(), 0)).toFixed(1)}s</td>
+              reduce((old, next) => old + next.totalTime(), 0).toFixed(1)}s</td>
+            <td>{wallTime.toFixed(1)}s</td>
+            <td>{(timings.filter(r => r.run === runNumber && ["lowering", "resting"].includes(r.type)).reduce((old, next) => old + next.totalTime(), 0)).toFixed(1)}s</td>
           </tr>
         {/each}
       </table>
